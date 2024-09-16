@@ -1,6 +1,7 @@
 public class Calculator {
 
 
+
     // 더하기
     public int plus(int a, int b) {
         return a + b;
@@ -23,6 +24,5 @@ public class Calculator {
         }
         return a / b;
     }
-
 
 }

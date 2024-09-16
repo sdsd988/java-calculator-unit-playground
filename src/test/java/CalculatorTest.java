@@ -62,6 +62,20 @@ public class CalculatorTest {
         assertEquals(result, 2);
     }
 
+    @DisplayName("나눗셈 예외 테스트 - 정수 반환하지 않는 경우")
+    @Test
+    void divideFailTest2() {
+
+        //given
+        Calculator calculator = new Calculator();
+
+        //when
+        int result = calculator.divide(3, 2);
+
+        //then
+        assertEquals(result, 1);
+    }
+
     @DisplayName("나눗셈 예외 테스트 (0으로 나누는 경우)")
     @Test
     void divideFailTest() {
