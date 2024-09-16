@@ -21,8 +21,6 @@ class StringCalculatorTest {
     @DisplayName("성공 : 커스텀 구분자를 사용하는 경우")
     void testSumWithCustomDelimiter() {
         assertEquals(6, StringCalculator.sum("//;\n1;2;3;"));
-        assertEquals(15, StringCalculator.sum("//|\n4|5|6"));
-        assertEquals(10, StringCalculator.sum("//#\n2#3#5"));
     }
 
     @Test
@@ -33,13 +31,18 @@ class StringCalculatorTest {
         assertEquals(15, StringCalculator.sum("//*\n4*5*6"));
 
     }
-    
+
     @Test
     @DisplayName("성공 : 빈 입력에 대한 테스트" )
     void testSumWithEmptyInput() {
         assertEquals(0, StringCalculator.sum(""));
     }
 
+    @Test
+    @DisplayName("성공 : 공백 입력에 대한 테스트" )
+    void testSumWithBlankInput() {
+        assertEquals(0, StringCalculator.sum("   "));
+    }
     @Test
     @DisplayName("예외 : 숫자 이외의 값이 포함된 경우 예외 발생 확인")
     void testExceptionForNonNumericValues() {

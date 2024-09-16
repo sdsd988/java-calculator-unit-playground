@@ -1,7 +1,9 @@
 public class StringCalculator {
 
     public static int sum(String input) {
-        if (input == null || input.isEmpty()) {
+
+        input = input.trim();
+        if (input.isEmpty()) {
             return 0;
         }
 
