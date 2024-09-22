@@ -1,12 +1,9 @@
 public class StringCalculator {
 
-    public static int sum(String input) {
+    public int sum(String input) {
 
-        input = input.trim();
-        if (input.isEmpty()) {
-            return 0;
-        }
-
+        validateInput(input);
+        
         String delimiter = ",|:";  // 기본 구분자
         String numbers = input;
 
@@ -36,8 +33,17 @@ public class StringCalculator {
         return sum;
     }
 
+    private static void validateInput(String input) {
+        if (input == null) {
+            throw new IllegalArgumentException("null 값은 입력될 수 없습니다.");
+        }
+        if (input.trim().isEmpty()) {
+            throw new IllegalArgumentException("공백값은 입력될 수 없습니다.");
+        }
+    }
+
     // 정규식 메타 문자를 이스케이프하는 메소드
-    private static String escapeSpecialRegexChars(String delimiter) {
+    private String escapeSpecialRegexChars(String delimiter) {
         return delimiter.replaceAll("([\\W])", "\\\\$1");
     }
 
