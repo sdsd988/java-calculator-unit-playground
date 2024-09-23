@@ -33,16 +33,16 @@ class StringCalculatorTest {
 
     }
 
-    @ParameterizedTest
-    @NullAndEmptySource
-    void nullAndEmptyInputTest(String input) {
-        assertThrows(IllegalArgumentException.class, () -> new StringCalculator().sum(input));
-    }
 
     @Test
-    @DisplayName("성공 : 긴 공백 입력에 대한 테스트" )
+    @DisplayName("성공 : 공백 입력에 대한 테스트" )
     void testSumWithBlankInput() {
-        assertThrows(IllegalArgumentException.class, () -> new StringCalculator().sum("    "));
+        assertEquals(0,new StringCalculator().sum(""));
+    }
+    @Test
+    @DisplayName("성공 : 긴 공백 입력에 대한 테스트" )
+    void testSumWithLongBlankInput() {
+        assertEquals(0,new StringCalculator().sum("    "));
     }
     @Test
     @DisplayName("예외 : 숫자 이외의 값이 포함된 경우 예외 발생 확인")

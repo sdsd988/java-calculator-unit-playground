@@ -1,6 +1,9 @@
 
 public class StringCalculator {
 
+
+    private static final String DEFAULT_DELIMITER = ",|:";
+
     public int sum(String calculatorInput) {
         validateInput(calculatorInput);
         String[] inputSplitToken = splitCalculatorInput(calculatorInput);
@@ -8,9 +11,7 @@ public class StringCalculator {
         return summarizeToken(inputSplitToken);
     }
 
-
     private String[] splitCalculatorInput(String calculatorInput) {
-
         if (calculatorInput.startsWith("//")) {
             return customDelimiterSplit(calculatorInput);
         } else {
@@ -19,10 +20,7 @@ public class StringCalculator {
     }
 
     private String[] defaultDelimiterSplit(String calculatorInput) {
-
-        String defaultDelimiter = ",|:";  // 기본 구분자
-
-        return calculatorInput.split(defaultDelimiter);
+        return calculatorInput.split(DEFAULT_DELIMITER);
     }
 
     private String[] customDelimiterSplit(String calculatorInput) {
@@ -35,8 +33,11 @@ public class StringCalculator {
 
     private int summarizeToken(String[] tokens) {
         int sum = 0;
+
         for (String token : tokens) {
-            sum += Integer.parseInt(token);
+            if (!token.trim().isEmpty()) {
+                sum += Integer.parseInt(token);
+            }
         }
         return sum;
     }
@@ -44,6 +45,9 @@ public class StringCalculator {
     private void validateToken(String[] tokens) {
         for (String token : tokens) {
             token = token.trim();
+            if (token.isEmpty()) {
+                break;
+            }
             if (!token.matches("-?\\d+")) {
                 throw new RuntimeException("숫자 이외의 값이 포함되어 있습니다: " + token);
             }
@@ -57,9 +61,6 @@ public class StringCalculator {
     private void validateInput(String input) {
         if (input == null) {
             throw new IllegalArgumentException("null 값은 입력될 수 없습니다.");
-        }
-        if (input.trim().isEmpty()) {
-            throw new IllegalArgumentException("공백값은 입력될 수 없습니다.");
         }
     }
     // 정규식 메타 문자를 이스케이프하는 메소드
