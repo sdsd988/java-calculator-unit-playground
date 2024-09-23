@@ -9,8 +9,7 @@ class StringCalculatorTest {
 
     // 무엇을 테스트 해야 하나
     // 1. 성공 테스트 - 기본, 커스텀 구분자
-    // 2. 실패 테스트 - ??
-    // 3. 예외 테스트 - 기본, 커스텀 구분자 음수, 문자열
+    // 2. 예외 테스트 - 기본, 커스텀 구분자 음수, 문자열
     @Test
     @DisplayName("성공 : 기본 구분자(쉼표, 콜론)를 사용하는 경우")
     void testSumWithDefaultDelimiters() {
@@ -34,7 +33,7 @@ class StringCalculatorTest {
 
     }
 
-    @ParameterizedTest(name = "예외 : null or 공백이 입력되면 예외를 발생한다.")
+    @ParameterizedTest
     @NullAndEmptySource
     void nullAndEmptyInputTest(String input) {
         assertThrows(IllegalArgumentException.class, () -> new StringCalculator().sum(input));

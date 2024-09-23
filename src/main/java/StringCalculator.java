@@ -1,24 +1,50 @@
+
 public class StringCalculator {
 
-    public int sum(String input) {
+    public int sum(String calculatorInput) {
+        validateInput(calculatorInput);
+        String[] splitResult = splitCalculatorInput(calculatorInput);
+        validateToken(splitResult);
+        return summarizeToken(splitResult);
+    }
 
-        validateInput(input);
-        
-        String delimiter = ",|:";  // 기본 구분자
-        String numbers = input;
 
-        // 커스텀 구분자가 있을 경우 처리
-        if (input.startsWith("//")) {
-            int delimiterEndIndex = input.indexOf("\n");
-            delimiter = input.substring(2, delimiterEndIndex); // 커스텀 구분자 추출
-            delimiter = escapeSpecialRegexChars(delimiter);   // 정규식 메타 문자 이스케이프 처리
-            numbers = input.substring(delimiterEndIndex + 1);  // 숫자 부분 추출
+    private String[] splitCalculatorInput(String calculatorInput) {
+        String[] splitResult;
+        if (calculatorInput.startsWith("//")) {
+            splitResult = customDelimiterSplit(calculatorInput);
+        } else {
+            splitResult = defaultDelimiterSplit(calculatorInput);
         }
+        return splitResult;
+    }
 
-        // 지정된 구분자로 문자열 분리
-        String[] tokens = numbers.split(delimiter);
+    private String[] defaultDelimiterSplit(String calculatorInput) {
 
+        String defaultDelimiter = ",|:";  // 기본 구분자
+
+        return calculatorInput.split(defaultDelimiter);
+    }
+
+    private String[] customDelimiterSplit(String calculatorInput) {
+        int delimiterEndIndex = calculatorInput.indexOf("\n");
+        String customDelimiter = calculatorInput.substring(2, delimiterEndIndex); // 커스텀 구분자 추출
+        customDelimiter = escapeSpecialRegexChars(customDelimiter);   // 정규식 메타 문자 이스케이프 처리
+        String substrings = calculatorInput.substring(delimiterEndIndex + 1);// 숫자 부분 추출
+        return substrings.split(customDelimiter);
+    }
+
+    private int summarizeToken(String[] tokens) {
         int sum = 0;
+        for (String token : tokens) {
+            sum += Integer.parseInt(token);
+        }
+        return sum;
+    }
+
+
+    private void validateToken(String[] tokens) {
+
         for (String token : tokens) {
             token = token.trim();
             if (!token.matches("-?\\d+")) {
@@ -28,12 +54,12 @@ public class StringCalculator {
             if (number < 0) {
                 throw new RuntimeException("음수는 허용되지 않습니다: " + number);
             }
-            sum += number;
+
         }
-        return sum;
+
     }
 
-    private static void validateInput(String input) {
+    private void validateInput(String input) {
         if (input == null) {
             throw new IllegalArgumentException("null 값은 입력될 수 없습니다.");
         }
