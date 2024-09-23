@@ -3,20 +3,19 @@ public class StringCalculator {
 
     public int sum(String calculatorInput) {
         validateInput(calculatorInput);
-        String[] splitResult = splitCalculatorInput(calculatorInput);
-        validateToken(splitResult);
-        return summarizeToken(splitResult);
+        String[] inputSplitToken = splitCalculatorInput(calculatorInput);
+        validateToken(inputSplitToken);
+        return summarizeToken(inputSplitToken);
     }
 
 
     private String[] splitCalculatorInput(String calculatorInput) {
-        String[] splitResult;
+
         if (calculatorInput.startsWith("//")) {
-            splitResult = customDelimiterSplit(calculatorInput);
+            return customDelimiterSplit(calculatorInput);
         } else {
-            splitResult = defaultDelimiterSplit(calculatorInput);
+            return defaultDelimiterSplit(calculatorInput);
         }
-        return splitResult;
     }
 
     private String[] defaultDelimiterSplit(String calculatorInput) {
@@ -42,9 +41,7 @@ public class StringCalculator {
         return sum;
     }
 
-
     private void validateToken(String[] tokens) {
-
         for (String token : tokens) {
             token = token.trim();
             if (!token.matches("-?\\d+")) {
@@ -56,9 +53,7 @@ public class StringCalculator {
             }
 
         }
-
     }
-
     private void validateInput(String input) {
         if (input == null) {
             throw new IllegalArgumentException("null 값은 입력될 수 없습니다.");
@@ -67,7 +62,6 @@ public class StringCalculator {
             throw new IllegalArgumentException("공백값은 입력될 수 없습니다.");
         }
     }
-
     // 정규식 메타 문자를 이스케이프하는 메소드
     private String escapeSpecialRegexChars(String delimiter) {
         return delimiter.replaceAll("([\\W])", "\\\\$1");
