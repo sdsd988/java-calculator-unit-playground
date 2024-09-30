@@ -25,17 +25,17 @@ class CarTest {
     @ParameterizedTest
     @DisplayName("4이하의 숫자를 받으면 자동차는 이동하지 않는다.")
     @MethodSource("stopNumberAndStatusTestArguments")
-    public void testStopByRandomNumber(int v1, CarStatus v2) {
-        CarStatus result = car.drivingCarByRandomNumber(v1);
-        assertEquals(result, v2);
+    public void testStopByRandomNumber(int inputRandomInt, CarStatus ExpectedcarStatus) {
+        CarStatus result = car.drivingCarByRandomNumber(inputRandomInt);
+        assertEquals(result, ExpectedcarStatus);
     }
 
     @ParameterizedTest
     @DisplayName("4이상의 숫자를 받으면 자동차는 이동한다.")
     @MethodSource("drivingNumberAndStatusTestArguments")
-    public void testDrivingRandomNumber(int v1, CarStatus v2) {
-        CarStatus result = car.drivingCarByRandomNumber(v1);
-        assertEquals(result, v2);
+    public void testDrivingRandomNumber(int inputRandomInt, CarStatus ExpectedcarStatus) {
+        CarStatus result = car.drivingCarByRandomNumber(inputRandomInt);
+        assertEquals(result, ExpectedcarStatus);
     }
 
     @ParameterizedTest
