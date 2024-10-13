@@ -1,7 +1,6 @@
 package movingcar;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,57 +14,67 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CarTest {
 
-    private Car car;
 
-    @BeforeEach
+    @Test
+    @DisplayName("자동차는 이름이 있다")
     void createCar() {
-        car = new Car();
+
+        Car car = new Car("K5");
+        String result = car.getCarName();
+        Assertions.assertEquals(result,"K5");
     }
 
     @ParameterizedTest
-    @DisplayName("4이하의 숫자를 받으면 자동차는 이동하지 않는다.")
-    @MethodSource("stopNumberAndStatusTestArguments")
-    public void testStopByRandomNumber(int inputRandomInt, CarStatus ExpectedcarStatus) {
-        CarStatus result = car.drivingCarByRandomNumber(inputRandomInt);
-        assertEquals(result, ExpectedcarStatus);
+    @DisplayName("4이하의 숫자를 받으면 자동차는 이동하지 않음")
+    @MethodSource("stopArguments")
+    public void testStopByRandomNumber(int randomNumber, int position) {
+        MovingIndicator randomMoveIndicator = new RandomNumberMovingIndicator(randomNumber);
+        Car car = new Car("K5", randomMoveIndicator);
+        car.move();
+        assertEquals(position,car.getPosition());
     }
 
     @ParameterizedTest
-    @DisplayName("4이상의 숫자를 받으면 자동차는 이동한다.")
-    @MethodSource("drivingNumberAndStatusTestArguments")
-    public void testDrivingRandomNumber(int inputRandomInt, CarStatus ExpectedcarStatus) {
-        CarStatus result = car.drivingCarByRandomNumber(inputRandomInt);
-        assertEquals(result, ExpectedcarStatus);
+    @DisplayName("4이상의 숫자를 받으면 자동차는 이동")
+    @MethodSource("moveArguments")
+    public void testDrivingRandomNumber(int randomNumber, int position) {
+        MovingIndicator randomMoveIndicator = new RandomNumberMovingIndicator(randomNumber);
+        Car car = new Car("K5",randomMoveIndicator);
+        car.move();
+        assertEquals(car.getPosition(),position);
     }
+
 
     @ParameterizedTest
     @ValueSource(ints = {-1,10,15})
-    @DisplayName("랜덤 인자는 0~9 사이의 숫자만 가능합니다.")
-    void randomNumberIllegalArgument(int value) {
+    @DisplayName("랜덤 인자는 0~9 사이의 숫자만 가능")
+    void randomNumberIllegalArgument(int randomNumber) {
+        MovingIndicator randomMoveIndicator = new RandomNumberMovingIndicator(randomNumber);
+        Car car = new Car("K5",randomMoveIndicator);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> car.drivingCarByRandomNumber(value));
+                car::move);
         assertEquals(exception.getMessage(), "랜덤 인자는 0~9 사이의 숫자만 가능합니다.");
     }
 
 
-
-    private static Stream<Arguments> stopNumberAndStatusTestArguments() {
+    private static Stream<Arguments> stopArguments() {
         return Stream.of(
-                Arguments.arguments(0, CarStatus.STOP),
-                Arguments.arguments(1, CarStatus.STOP),
-                Arguments.arguments(2, CarStatus.STOP),
-                Arguments.arguments(3, CarStatus.STOP)
+                Arguments.arguments(0, 0),
+                Arguments.arguments(1, 0),
+                Arguments.arguments(2, 0),
+                Arguments.arguments(3, 0)
         );
     }
 
-    private static Stream<Arguments> drivingNumberAndStatusTestArguments() {
+    private static Stream<Arguments> moveArguments() {
         return Stream.of(
-                Arguments.arguments(4, CarStatus.DRIVING),
-                Arguments.arguments(5, CarStatus.DRIVING),
-                Arguments.arguments(6, CarStatus.DRIVING),
-                Arguments.arguments(7, CarStatus.DRIVING),
-                Arguments.arguments(8, CarStatus.DRIVING),
-                Arguments.arguments(9, CarStatus.DRIVING)
+                Arguments.arguments(4, 1),
+                Arguments.arguments(5, 1),
+                Arguments.arguments(6, 1),
+                Arguments.arguments(7, 1),
+                Arguments.arguments(8, 1),
+                Arguments.arguments(9, 1)
         );
     }
+
 }
