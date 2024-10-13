@@ -23,7 +23,7 @@ public class RandomNumberMovingIndicator implements MovingIndicator {
         }
     }
 
-    private static boolean checkNumberRange(int number) {
+    private boolean checkNumberRange(int number) {
         return number < MIN_VALUE || number > MAX_VALUE;
     }
 
