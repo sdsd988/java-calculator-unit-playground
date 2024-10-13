@@ -1,8 +1,8 @@
+import calculator.StringCalculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class StringCalculatorTest {
@@ -85,9 +85,23 @@ class StringCalculatorTest {
     @DisplayName("예외 : 커스텀 구분자가 하나 이상이면 예외 발생 ")
     void testCustomDelimiterLength() {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            new StringCalculator().sum("//;;\n1;2;3");
+            new StringCalculator().sum("//;;\n1;2;*3");
         });
         Assertions.assertEquals("구분자가 잘못되었습니다.", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("예외 : 커스텀 구분자가 하나 이상이면 예외 발생 ")
+    void testCustomDelimiterLength2() {
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            new StringCalculator().sum("//;\n1;2*3");
+        });
+        Assertions.assertEquals("잘못된 구분자가 토큰에 포함되어있습니다.", exception.getMessage());
+    }
+
+
+
+
+
 
 }

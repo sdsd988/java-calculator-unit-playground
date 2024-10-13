@@ -1,7 +1,13 @@
+package calculator;
+
+import java.util.List;
+
 public class StringCalculator {
 
-    private final DefaultDelimiterSplit defaultDelimiterSplit= new DefaultDelimiterSplit();
-    private final CustomDelimiterSplit customDelimiterSplit = new CustomDelimiterSplit();
+    private static final List<DelimiterSplit> delimiterSplits = List.of(
+            new DefaultDelimiterSplit(),
+            new CustomDelimiterSplit()
+    );
 
     public int sum(String calculatorInput) {
         validateInput(calculatorInput);
@@ -10,22 +16,27 @@ public class StringCalculator {
         return summarizeToken(inputSplitToken);
     }
 
-    // todo 리팩토링 (Custom, Default 따라 적절한 DelimiterSplit 주입되서 Interface 활용할 수 있게)
     private String[] splitCalculatorInput(String calculatorInput) {
-        if (customDelimiterSplit.isCustomDelimiter(calculatorInput)) {
-            return customDelimiterSplit.InputStringSplitByDelimiter(calculatorInput);
+        for (DelimiterSplit delimiterSplit : delimiterSplits) {
+            if (delimiterSplit.supports()) {
+                return delimiterSplit.inputStringSplitByDelimiter(calculatorInput);
+            }
         }
-        return defaultDelimiterSplit.InputStringSplitByDelimiter(calculatorInput);
+        throw new RuntimeException("지원되는 스플리터가 없습니다.");
     }
 
     private int summarizeToken(String[] tokens) {
         int sum = 0;
         for (String token : tokens) {
-            if (!token.trim().isEmpty()) {
+            if (isNotEmpty(token)) {
                 sum += Integer.parseInt(token);
             }
         }
         return sum;
+    }
+
+    private boolean isNotEmpty(String token) {
+        return !token.trim().isEmpty();
     }
 
     private void validateToken(String[] tokens) {
