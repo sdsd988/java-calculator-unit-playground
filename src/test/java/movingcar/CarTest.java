@@ -18,9 +18,8 @@ class CarTest {
     @Test
     @DisplayName("자동차는 이름이 있다")
     void createCar() {
-
         Car car = new Car("K5");
-        String result = car.getCarName();
+        String result = car.getName();
         Assertions.assertEquals(result,"K5");
     }
 
@@ -28,7 +27,7 @@ class CarTest {
     @DisplayName("4이하의 숫자를 받으면 자동차는 이동하지 않음")
     @MethodSource("stopArguments")
     public void testStopByRandomNumber(int randomNumber, int position) {
-        MovingIndicator randomMoveIndicator = new RandomNumberMovingIndicator(randomNumber);
+        MovingIndicator randomMoveIndicator = new NumberMovingIndicator(randomNumber);
         Car car = new Car("K5", randomMoveIndicator);
         car.move();
         assertEquals(position,car.getPosition());
@@ -38,7 +37,7 @@ class CarTest {
     @DisplayName("4이상의 숫자를 받으면 자동차는 이동")
     @MethodSource("moveArguments")
     public void testDrivingRandomNumber(int randomNumber, int position) {
-        MovingIndicator randomMoveIndicator = new RandomNumberMovingIndicator(randomNumber);
+        MovingIndicator randomMoveIndicator = new NumberMovingIndicator(randomNumber);
         Car car = new Car("K5",randomMoveIndicator);
         car.move();
         assertEquals(car.getPosition(),position);
@@ -49,7 +48,7 @@ class CarTest {
     @ValueSource(ints = {-1,10,15})
     @DisplayName("랜덤 인자는 0~9 사이의 숫자만 가능")
     void randomNumberIllegalArgument(int randomNumber) {
-        MovingIndicator randomMoveIndicator = new RandomNumberMovingIndicator(randomNumber);
+        MovingIndicator randomMoveIndicator = new NumberMovingIndicator(randomNumber);
         Car car = new Car("K5",randomMoveIndicator);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 car::move);
@@ -57,14 +56,7 @@ class CarTest {
     }
 
 
-    private static Stream<Arguments> stopArguments() {
-        return Stream.of(
-                Arguments.arguments(0, 0),
-                Arguments.arguments(1, 0),
-                Arguments.arguments(2, 0),
-                Arguments.arguments(3, 0)
-        );
-    }
+
 
     private static Stream<Arguments> moveArguments() {
         return Stream.of(
