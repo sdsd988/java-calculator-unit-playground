@@ -40,3 +40,8 @@
 
 ## 4. 우승 자동차 구하기
 
+1. Indicator Refactoring (생성자 추가) 
+2. Indicator 객체 테스트 코드 추가
+3. Cargame 생성
+
+

@@ -23,6 +23,7 @@ class CarTest {
         Assertions.assertEquals(result,"K5");
     }
 
+
     @ParameterizedTest
     @DisplayName("4이하의 숫자를 받으면 자동차는 이동하지 않음")
     @MethodSource("stopArguments")
@@ -44,19 +45,6 @@ class CarTest {
     }
 
 
-    @ParameterizedTest
-    @ValueSource(ints = {-1,10,15})
-    @DisplayName("랜덤 인자는 0~9 사이의 숫자만 가능")
-    void randomNumberIllegalArgument(int randomNumber) {
-        MovingIndicator randomMoveIndicator = new NumberMovingIndicator(randomNumber);
-        Car car = new Car("K5",randomMoveIndicator);
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                car::move);
-        assertEquals(exception.getMessage(), "랜덤 인자는 0~9 사이의 숫자만 가능합니다.");
-    }
-
-
-
 
     private static Stream<Arguments> moveArguments() {
         return Stream.of(
@@ -66,6 +54,14 @@ class CarTest {
                 Arguments.arguments(7, 1),
                 Arguments.arguments(8, 1),
                 Arguments.arguments(9, 1)
+        );
+    }
+
+    private static Stream<Arguments> stopArguments() {
+        return Stream.of(
+                Arguments.arguments(1, 0),
+                Arguments.arguments(2, 0),
+                Arguments.arguments(3, 0)
         );
     }
 
